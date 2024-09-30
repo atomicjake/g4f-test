@@ -14,12 +14,25 @@ app.use((req, res, next) => {
     next(); // Continue to the next middleware/route handler
 });
 
-// Define an endpoint
+// POST endpoint for /api/gpt
 app.post('/api/gpt', async (req, res) => {
     try {
         const input = req.body.input; // Get input from the request body
         const result = await someFunction(input); // Call your function with the input
-        console.log(`Processed input: ${input}, Result: ${result}`);
+        console.log(`Processed POST input: ${input}, Result: ${result}`);
+        res.json({ result }); // Send the result back as JSON
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred' });
+    }
+});
+
+// GET endpoint for /api/gpt
+app.get('/api/gpt', async (req, res) => {
+    try {
+        const input = req.query.input; // Get input from the query parameters
+        const result = await someFunction(input); // Call your function with the input
+        console.log(`Processed GET input: ${input}, Result: ${result}`);
         res.json({ result }); // Send the result back as JSON
     } catch (error) {
         console.error(error);
