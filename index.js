@@ -4,24 +4,26 @@ const { generateResponse } = require('./dist/index.js');  // Import the function
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware to parse JSON bodies
+// Middleware to parse JSON bodies (optional for GET requests, but included for completeness)
 app.use(express.json());
 
 /**
  * Example API endpoint using g4f functionality
- * @route POST /api/use-g4f
- * @body {string} input - User input to process with g4f
+ * @route GET /api/use-g4f
+ * @query {string} input - User input to process with g4f
  * @returns {json} - Returns the processed result from g4f
  */
-app.post('/api/use-g4f', async (req, res) => {
-  const { input } = req.body;
+app.get('/api/use-g4f', async (req, res) => {
+  const { input } = req.query;  // Get input from query parameters
 
+  // Check if input is provided
   if (!input) {
     return res.status(400).json({ error: "Please provide input" });
   }
 
   try {
-    const result = await generateResponse(input); // Call the function from your g4f package
+    // Call the function from your g4f package to generate a response
+    const result = await generateResponse(input);
     return res.json({ result });
   } catch (error) {
     return res.status(500).json({ error: error.message || "An error occurred while processing" });
