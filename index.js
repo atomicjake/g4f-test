@@ -5,11 +5,21 @@ const { someFunction } = require('./dist/index.js'); // Adjust the import accord
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Define an endpoint with a GET request
-app.get('/api/gpt', async (req, res) => {
+// Middleware to parse JSON requests
+app.use(express.json());
+
+// Log when a request is received
+app.use((req, res, next) => {
+    console.log(`Received ${req.method} request on ${req.url} at ${new Date().toISOString()}`);
+    next(); // Continue to the next middleware/route handler
+});
+
+// Define an endpoint
+app.post('/api/gpt', async (req, res) => {
     try {
-        const input = req.query.input; // Get input from query parameters
+        const input = req.body.input; // Get input from the request body
         const result = await someFunction(input); // Call your function with the input
+        console.log(`Processed input: ${input}, Result: ${result}`);
         res.json({ result }); // Send the result back as JSON
     } catch (error) {
         console.error(error);
@@ -17,7 +27,7 @@ app.get('/api/gpt', async (req, res) => {
     }
 });
 
-// Start the server
+// Start the server and log when it's live
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`🚀 Server is live on http://localhost:${PORT}`);
 });
