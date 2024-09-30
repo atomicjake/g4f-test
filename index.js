@@ -5,13 +5,10 @@ const { someFunction } = require('./dist/index.js'); // Adjust the import accord
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware to parse JSON requests
-app.use(express.json());
-
-// Define an endpoint
-app.post('/api/gpt', async (req, res) => {
+// Define an endpoint with a GET request
+app.get('/api/gpt', async (req, res) => {
     try {
-        const input = req.body.input; // Get input from the request body
+        const input = req.query.input; // Get input from query parameters
         const result = await someFunction(input); // Call your function with the input
         res.json({ result }); // Send the result back as JSON
     } catch (error) {
