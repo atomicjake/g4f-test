@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const { someFunction } = require('./dist/index.js'); // Import the function from your module
 
