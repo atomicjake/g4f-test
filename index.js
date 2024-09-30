@@ -17,9 +17,15 @@ app.post('/api/chat', async (req, res) => {
 
         // Call your GPT-4 functionality from the g4f module
         const response = await g4f.chatCompletion(userInput); // Change this to the actual function from your index.js
-        res.json(response); // Return the response from GPT-4
+
+        // Check if response is valid and send it back
+        if (response && response.output) {
+            res.json({ output: response.output });
+        } else {
+            res.status(500).json({ error: 'Unexpected response format' });
+        }
     } catch (error) {
-        console.error(error);
+        console.error('Error in /api/chat:', error);
         res.status(500).json({ error: 'An error occurred' });
     }
 });
