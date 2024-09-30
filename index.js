@@ -1,5 +1,5 @@
 const express = require('express');
-const { generateResponse } = require('./dist/index.js');  // Import the function from your g4f package
+const { generateResponse } = require('./dist/index');  // Import the function from your g4f package
 
 const app = express();
 const port = process.env.PORT || 3000;
