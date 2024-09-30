@@ -14,36 +14,24 @@ app.use((req, res, next) => {
     next(); // Continue to the next middleware/route handler
 });
 
-// POST endpoint for /api/gpt
-app.post('/api/gpt', async (req, res) => {
-    try {
-        const input = req.body.input; // Get input from the request body
-        // Validate input
-        if (!input || typeof input !== 'string') {
-            return res.status(400).json({ error: 'Invalid input: input is required and should be a string.' });
-        }
-        
-        const result = await someFunction(input); // Call your function with the input
-        console.log(`Processed POST input: ${input}, Result: ${result}`);
-        res.json({ result }); // Send the result back as JSON
-    } catch (error) {
-        console.error(`POST error: ${error.message}`);
-        res.status(500).json({ error: error.message }); // Send detailed error message
-    }
-});
-
 // GET endpoint for /api/gpt
 app.get('/api/gpt', async (req, res) => {
     try {
         const input = req.query.input; // Get input from the query parameters
+
         // Validate input
-        if (!input || typeof input !== 'string') {
-            return res.status(400).json({ error: 'Invalid input: input is required and should be a string.' });
+        if (!input || typeof input !== 'string' || input.trim() === '') {
+            return res.status(400).json({ error: 'Invalid input: input is required and should be a non-empty string.' });
         }
+
+        // Call your function with the input
+        const result = await someFunction(input);
         
-        const result = await someFunction(input); // Call your function with the input
+        // Log the processed input and result
         console.log(`Processed GET input: ${input}, Result: ${result}`);
-        res.json({ result }); // Send the result back as JSON
+        
+        // Send the result back as JSON
+        res.json({ result });
     } catch (error) {
         console.error(`GET error: ${error.message}`);
         res.status(500).json({ error: error.message }); // Send detailed error message
