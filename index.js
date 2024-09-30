@@ -1,5 +1,5 @@
 const express = require('express');
-const { someFunction } = require('./dist/index.js');  // Import a function from your package
+const { generateResponse } = require('./dist/index.js');  // Import the function from your g4f package
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -21,7 +21,7 @@ app.post('/api/use-g4f', async (req, res) => {
   }
 
   try {
-    const result = await someFunction(input); // Call a function from your g4f package
+    const result = await generateResponse(input); // Call the function from your g4f package
     return res.json({ result });
   } catch (error) {
     return res.status(500).json({ error: error.message || "An error occurred while processing" });
