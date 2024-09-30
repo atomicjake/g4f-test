@@ -18,12 +18,17 @@ app.use((req, res, next) => {
 app.post('/api/gpt', async (req, res) => {
     try {
         const input = req.body.input; // Get input from the request body
+        // Validate input
+        if (!input || typeof input !== 'string') {
+            return res.status(400).json({ error: 'Invalid input: input is required and should be a string.' });
+        }
+        
         const result = await someFunction(input); // Call your function with the input
         console.log(`Processed POST input: ${input}, Result: ${result}`);
         res.json({ result }); // Send the result back as JSON
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'An error occurred' });
+        console.error(`POST error: ${error.message}`);
+        res.status(500).json({ error: error.message }); // Send detailed error message
     }
 });
 
@@ -31,12 +36,17 @@ app.post('/api/gpt', async (req, res) => {
 app.get('/api/gpt', async (req, res) => {
     try {
         const input = req.query.input; // Get input from the query parameters
+        // Validate input
+        if (!input || typeof input !== 'string') {
+            return res.status(400).json({ error: 'Invalid input: input is required and should be a string.' });
+        }
+        
         const result = await someFunction(input); // Call your function with the input
         console.log(`Processed GET input: ${input}, Result: ${result}`);
         res.json({ result }); // Send the result back as JSON
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'An error occurred' });
+        console.error(`GET error: ${error.message}`);
+        res.status(500).json({ error: error.message }); // Send detailed error message
     }
 });
 
