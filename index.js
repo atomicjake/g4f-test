@@ -1,6 +1,6 @@
 // server.js
 const express = require('express');
-const { someFunction } = require('./dist/index.js'); // Adjust the import according to your structure
+const { someFunction } = require('./dist/index.js'); // Import the function from your module
 
 const app = express();
 const PORT = process.env.PORT || 3000;
